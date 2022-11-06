@@ -7,10 +7,14 @@ import java.util.ArrayList;
 public class LaptopDaoSerializableFile implements LaptopDao{
     private File file;
     private ArrayList<Laptop> laptopi;
+    private FileOutputStream fos;
+    private ObjectOutputStream oos;
 
     public LaptopDaoSerializableFile() throws IOException {
         file = new File("laptops.txt");
         laptopi = new ArrayList<>();
+        fos = new FileOutputStream(file.getCanonicalPath(), true);
+        oos = new ObjectOutputStream(fos);
         file.createNewFile();
     }
 
@@ -21,18 +25,7 @@ public class LaptopDaoSerializableFile implements LaptopDao{
 
     @Override
     public void dodajLaptopUFile(Laptop laptop) throws IOException {
-        FileOutputStream fos = new FileOutputStream(file.getCanonicalPath(), true);
-        if (file.length() == 0){
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(laptop);
-            oos.reset();
-            oos.close();
-        }
-        else{
-            MyOutput oos = new MyOutput(fos);
-            oos.writeObject(laptop);
-            oos.close();
-        }
+        oos.writeObject(laptop);
     }
 
     /**
@@ -68,7 +61,6 @@ public class LaptopDaoSerializableFile implements LaptopDao{
                 break;
             }
         }
-        f.close();
         return l;
     }
 }

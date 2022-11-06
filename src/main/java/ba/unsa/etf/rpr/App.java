@@ -7,7 +7,7 @@ import java.util.List;
 public class App
 {
     public static void main( String[] args ) throws IOException, ClassNotFoundException {
-        LaptopDaoJSONFile l = new LaptopDaoJSONFile();
+        /*LaptopDaoJSONFile l = new LaptopDaoJSONFile();
         Laptop lap = new Laptop();
         lap.setBrend("Apple");
         lap.setCijena(5000); lap.setModel("Mac");lap.setGrafickaKartica("Nvidia");
@@ -17,8 +17,8 @@ public class App
         l.dodajLaptopUFile(lap);
         ArrayList<Laptop> ls = new ArrayList<>();
         ls = l.vratiPodatkeIzDatoteke();
-        System.out.println(ls.size());
-        /*LaptopDaoJSONFile l = new LaptopDaoJSONFile();
+        System.out.println(ls.size());*/
+        LaptopDaoSerializableFile l = new LaptopDaoSerializableFile();
         Laptop lap = new Laptop();
         lap.setBrend("Apple");
         lap.setCijena(5000); lap.setModel("Mac");lap.setGrafickaKartica("Nvidia");
@@ -31,11 +31,12 @@ public class App
         lap2.setRam(16);lap2.setSsd(256);lap2.setVelicinaEkrana(20);lap2.setProcesor("Intel");
         l.dodajLaptopUListu(lap2);
         l.dodajLaptopUFile(lap2);
-        lap.setProcesor("AMD");
+        lap.setProcesor("Ryzen");
+        l.dodajLaptopUListu(lap);
         l.dodajLaptopUFile(lap);
         ArrayList<Laptop> lista = new ArrayList<>(l.vratiPodatkeIzDatoteke());
         System.out.println(lista.size());
         for (Laptop i : lista)
-            System.out.println(i.getProcesor());*/
+            System.out.println(i.getProcesor());
     }
 }
