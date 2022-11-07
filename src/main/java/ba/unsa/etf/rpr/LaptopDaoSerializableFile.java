@@ -1,23 +1,25 @@
 package ba.unsa.etf.rpr;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
     public class LaptopDaoSerializableFile implements LaptopDao{
-        private File file;
+        private final File file;
         private ArrayList<Laptop> laptopi;
-        private ObjectOutputStream oos;
 
         private void save() throws Exception {
-            ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(file));
-            ois.writeObject(laptopi);
+            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(this.file));
+            os.writeObject(laptopi);
         }
 
-        public LaptopDaoSerializableFile() throws IOException {
+        public LaptopDaoSerializableFile(){
             this.file = new File("laptops.txt");
-            this.laptopi = new ArrayList<Laptop>();
-            this.oos = new ObjectOutputStream(new FileOutputStream(file));
+            try {
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream(this.file));
+                this.laptopi = (ArrayList<Laptop>) in.readObject();
+            } catch (Exception e) {
+                this.laptopi = new ArrayList<>();
+            }
         }
 
         @Override
@@ -26,7 +28,7 @@ import java.util.ArrayList;
         }
 
         @Override
-        public void dodajLaptopUFile(Laptop laptop) throws IOException {
+        public void dodajLaptopUFile(Laptop laptop){
             dodajLaptopUListu(laptop);
             try {
                 this.save();
@@ -54,11 +56,8 @@ import java.util.ArrayList;
         }
 
         @Override
-        public ArrayList<Laptop> vratiPodatkeIzDatoteke() throws IOException, ClassNotFoundException {
-            ArrayList<Laptop> rez = new ArrayList<Laptop>();
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-            rez = (ArrayList<Laptop>) ois.readObject();
-            return rez;
+        public ArrayList<Laptop> vratiPodatkeIzDatoteke(){
+            return laptopi;
         }
     }
 
