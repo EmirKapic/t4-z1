@@ -1,6 +1,7 @@
 package ba.unsa.etf.rpr;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Laptop implements Serializable {
 
@@ -13,12 +14,8 @@ public class Laptop implements Serializable {
     private double velicinaEkrana;
     private String brend;
 
-    public String getBrend() {
-        return brend;
-    }
+    public Laptop(){
 
-    public void setBrend(String brend) {
-        this.brend = brend;
     }
 
     public String getModel() {
@@ -77,5 +74,38 @@ public class Laptop implements Serializable {
         this.velicinaEkrana = velicinaEkrana;
     }
 
+    public String getBrend() {
+        return brend;
+    }
 
+    public void setBrend(String brend) {
+        this.brend = brend;
+    }
+
+    @Override
+    public String toString() {
+        return "Laptop{" +
+                "model='" + model + '\'' +
+                ", cijena=" + cijena +
+                ", ram=" + ram +
+                ", ssd=" + ssd +
+                ", procesor='" + procesor + '\'' +
+                ", grafickaKartica='" + grafickaKartica + '\'' +
+                ", velicinaEkrana=" + velicinaEkrana +
+                ", brend='" + brend + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Laptop laptop = (Laptop) o;
+        return laptop.getProcesor().equals(this.procesor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(model, cijena, ram, ssd, procesor, grafickaKartica, velicinaEkrana, brend);
+    }
 }

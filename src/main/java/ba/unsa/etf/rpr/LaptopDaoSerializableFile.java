@@ -1,5 +1,7 @@
 package ba.unsa.etf.rpr;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -43,11 +45,11 @@ import java.util.ArrayList;
          * @return laptop with the given processor, or null if it doesn't exist
          */
         @Override
-        public Laptop getLaptop(String procesor) {
+        public Laptop getLaptop(String procesor) throws NeodgovarajuciProcesorException {
             for (Laptop l : laptopi)
                 if (l.getProcesor().equals(procesor))
                     return l;
-            return null;
+            throw new NeodgovarajuciProcesorException("Nema trazenog procesora");
         }
 
         @Override
@@ -56,8 +58,11 @@ import java.util.ArrayList;
         }
 
         @Override
-        public ArrayList<Laptop> vratiPodatkeIzDatoteke(){
-            return laptopi;
+        public ArrayList<Laptop> vratiPodatkeIzDatoteke() throws IOException, ClassNotFoundException {
+            ArrayList<Laptop> result = new ArrayList<>();
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(this.file));
+            result = (ArrayList<Laptop>) in.readObject();
+            return result;
         }
     }
 

@@ -1,29 +1,30 @@
 package ba.unsa.etf.rpr;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class LaptopDaoJSONFile implements LaptopDao {
+public class LaptopDaoXmlFile implements LaptopDao{
 
-    private final File file;
+    private File file;
+    private XmlMapper mapper;
     private ArrayList<Laptop> laptopi;
-    private ObjectMapper mapper;
 
-    public LaptopDaoJSONFile() {
 
-        this.file = new File("laptops.json");
+    public LaptopDaoXmlFile(){
+        file = new File("laptops.xml");
         try {
             file.createNewFile();
-            this.mapper = new ObjectMapper();
-            this.laptopi = mapper.readValue(this.file, new TypeReference<>(){});
+            this.mapper = new XmlMapper();
+            this.laptopi = mapper.readValue(file, new TypeReference<>(){});
         } catch (IOException e) {
             this.laptopi = new ArrayList<>();
         }
     }
-
     private void save(){
         try {
             mapper.writeValue(this.file,this.laptopi);
@@ -58,7 +59,7 @@ public class LaptopDaoJSONFile implements LaptopDao {
 
     @Override
     public ArrayList<Laptop> vratiPodatkeIzDatoteke() throws IOException {
-        ArrayList<Laptop> result = new ArrayList<>();
+        ArrayList<Laptop> result;
         result = mapper.readValue(file, new TypeReference<>(){});
         return result;
     }
